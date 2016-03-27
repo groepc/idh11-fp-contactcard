@@ -1,13 +1,12 @@
 <resources>
-    <string name="app_name">Mijn Contacten</string>
-    <string name="app_search_name">Zoek Vrienden</string>
-    <string name="action_my_contacts">Mijn contacten</string>
-    <string name="action_search_contacts">Zoek vrienden</string>
+    <string name="app_name">ContactCard</string>
+    <string name="action_settings">Settings</string>
     <string name="labelName">Naam:</string>
+    <string name="labelAddress">Straat:</string>
+    <string name="labelZipCode">Postcode:</string>
+    <string name="labelCity">Plaats:</string>
     <string name="labelEmail">E-mailadres:</string>
     <string name="labelPhone">Telefoon nr.:</string>
     <string name="labelSell">Mobiel nr.:</string>
-    <string name="labelAddress">Straat + Huisnr.:</string>
-    <string name="labelZipCode">Postcode:</string>
-    <string name="labelCity">Plaats:</string>
 </resources>
+
