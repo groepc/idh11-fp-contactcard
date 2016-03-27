@@ -8,16 +8,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import fdmpf.contactcard.fragments.FragmentContactList;
-import fdmpf.contactcard.fragments.FragmentContactDetail;
+import fdmpf.contactcard.fragments.FragmentSearchDetail;
+import fdmpf.contactcard.fragments.FragmentSearchList;
 
-public class MainActivity extends AppCompatActivity implements
-        FragmentContactList.OnFragmentInteractionListener{
+/**
+ * Created by Hans on 27-3-2016.
+ */
+public class SearchActivity extends AppCompatActivity implements
+        FragmentSearchList.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.search_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onFragmentInteraction(String msg) {
         Log.i("onFragmentInteraction", msg);
         // Doorsturen naar andere Fragments ...
-        FragmentContactDetail info = (FragmentContactDetail)
+        FragmentSearchDetail info = (FragmentSearchDetail)
                 getFragmentManager().findFragmentById(R.id.fragment_b);
         // In Landscape, info != null
         if (info != null ) {
