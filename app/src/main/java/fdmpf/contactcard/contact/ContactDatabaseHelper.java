@@ -15,11 +15,10 @@ import java.util.ArrayList;
 public class ContactDatabaseHelper extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "contacts.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     public ContactDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        setForcedUpgrade(DATABASE_VERSION);
     }
 
 
