@@ -20,34 +20,43 @@ public class Contact {
         this.title = title;
     }
 
-    public String getFirst() {
-        return first;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst(String first) {
-        this.first = first;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast() {
-        return last;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast(String last) {
-        this.last = last;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String imageUrl;
-    public String title;
-    public String first;
-    public String last;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String imageUrl;
+    private String title;
+    private String firstName;
+    private String lastName;
+    private String email;
 
     @Override
     public String toString() {
         return "Person{" +
                 "imageUrl='" + imageUrl + '\'' +
                 ", title='" + title + '\'' +
-                ", first='" + first + '\'' +
-                ", last='" + last + '\'' +
+                ", first='" + getFirstName() + '\'' +
+                ", last='" + getLastName() + '\'' +
                 '}';
     }
 }

@@ -68,8 +68,8 @@ public class ContactAdapter extends BaseAdapter {
 
         Contact contact = (Contact) mContactArrayList.get(position);
 
-        viewHolder.firstname.setText(contact.first);
-        viewHolder.lastname.setText(contact.last);
+        viewHolder.firstname.setText(contact.getFirstName());
+        viewHolder.lastname.setText(contact.getLastName());
         viewHolder.imageView = null; //setImageBitmap(person.imageUrl);
 
         return convertView;

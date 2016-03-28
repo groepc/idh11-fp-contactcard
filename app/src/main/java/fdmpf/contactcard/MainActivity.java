@@ -8,11 +8,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import fdmpf.contactcard.fragments.FragmentContactList;
+import fdmpf.contactcard.contact.Contact;
+import fdmpf.contactcard.contact.ContactDatabaseHelper;
 import fdmpf.contactcard.fragments.FragmentContactDetail;
+import fdmpf.contactcard.fragments.FragmentContactList;
 
 public class MainActivity extends AppCompatActivity implements
-        FragmentContactList.OnFragmentInteractionListener{
+        FragmentContactList.OnFragmentInteractionListener {
+
+
+    ContactDatabaseHelper dbh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +25,16 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        dbh = new ContactDatabaseHelper(getApplicationContext());
+
+        Contact contact1 = new Contact();
+        contact1.setFirstName("Perry");
+        contact1.setLastName("Faro");
+        contact1.setEmail("email@email.com");
+        dbh.addContact(contact1);
+
     }
 
     @Override
@@ -52,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements
         FragmentContactDetail info = (FragmentContactDetail)
                 getFragmentManager().findFragmentById(R.id.fragment_b);
         // In Landscape, info != null
-        if (info != null ) {
+        if (info != null) {
             info.infoText(msg);
         }
     }
