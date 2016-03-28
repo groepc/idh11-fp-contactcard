@@ -30,6 +30,7 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         while( cursor.moveToNext() ) {
             Contact contact = new Contact();
 
+            contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
             contact.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
             contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
             contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
@@ -37,7 +38,7 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
 
             contactList.add(contact);
         }
-
+        System.out.print(contactList);
         return contactList;
     }
 
@@ -49,6 +50,25 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         c.moveToFirst();
         db.close();
         return c;
+    }
+
+    public Contact getById (int id) {
+        String query = "SELECT * FROM Contacts WHERE id='" + id + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        db.close();
+
+        Contact contact = new Contact();
+
+        contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
+        contact.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
+        contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
+        contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+        contact.setImageUrl(cursor.getString(cursor.getColumnIndex("photoUrl")));
+
+
+        return contact;
     }
 
     public void addContact(Contact contact) {

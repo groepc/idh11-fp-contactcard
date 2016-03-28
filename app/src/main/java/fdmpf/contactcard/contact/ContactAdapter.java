@@ -20,7 +20,7 @@ public class ContactAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflator;
-    ArrayList mContactArrayList;
+    ArrayList<Contact> mContactArrayList;
 
     public ContactAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Contact> personArrayList)
     {
@@ -37,7 +37,7 @@ public class ContactAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Contact getItem(int position) {
         Log.i("getItem()","");
         return mContactArrayList.get(position);
     }

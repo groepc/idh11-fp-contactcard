@@ -4,6 +4,13 @@ package fdmpf.contactcard.contact;
  * Created by Hans on 27-3-2016.
  */
 public class Contact {
+
+    public int getId() { return id;}
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -49,6 +56,7 @@ public class Contact {
     private String firstName;
     private String lastName;
     private String email;
+    private int id;
 
     @Override
     public String toString() {

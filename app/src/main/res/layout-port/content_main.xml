@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:baselineAligned="false">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/fragment_a"
             class="fdmpf.contactcard.fragments.FragmentContactList"
             android:layout_width="0dp"

@@ -7,42 +7,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import fdmpf.contactcard.R;
+import fdmpf.contactcard.contact.Contact;
+import fdmpf.contactcard.contact.ContactAdapter;
+import fdmpf.contactcard.contact.ContactDatabaseHelper;
 
 /**
  * Created by Hans on 27-3-2016.
  */
-public class FragmentContactList extends Fragment implements View.OnClickListener {
+public class FragmentContactList extends Fragment implements AdapterView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<Contact> contactList = new ArrayList<>();
+    private ListView contactListView;
+    private ContactAdapter arrayAdapter;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentA.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentContactList newInstance(String param1, String param2) {
-        FragmentContactList fragment = new FragmentContactList();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public FragmentContactList() {
         // Required empty public constructor
@@ -51,10 +38,9 @@ public class FragmentContactList extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        ContactDatabaseHelper dbh = new ContactDatabaseHelper(getActivity().getApplicationContext());
+        contactList = dbh.getAllContacts();
+
     }
 
     @Override
@@ -66,7 +52,11 @@ public class FragmentContactList extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
 
+        arrayAdapter = new ContactAdapter(getActivity().getApplicationContext(), inflater, contactList);
 
+        contactListView = (ListView) view.findViewById(R.id.listView);
+        contactListView.setOnItemClickListener(this);
+        contactListView.setAdapter(arrayAdapter);
 
         return view;
     }
@@ -88,12 +78,11 @@ public class FragmentContactList extends Fragment implements View.OnClickListene
         mListener = null;
     }
 
+
     @Override
-    public void onClick(View v) {
-        Log.i("onClick()","");
-        if (mListener != null) {
-            mListener.onFragmentInteraction("MAD 2015");
-        }
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Contact contact = arrayAdapter.getItem(position);
+        mListener.onFragmentInteraction(contact.getId());
     }
 
     /**
@@ -107,6 +96,6 @@ public class FragmentContactList extends Fragment implements View.OnClickListene
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String msg);
+        public void onFragmentInteraction(int msg);
     }
 }
