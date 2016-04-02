@@ -70,10 +70,12 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
+        View viewEmpty = inflater.inflate(R.layout.contact_empty_list_item, container, false);
 
         arrayAdapter = new ContactAdapter(getActivity().getApplicationContext(), inflater, contactList);
 
         contactListView = (ListView) view.findViewById(R.id.listView);
+        contactListView.setEmptyView(viewEmpty);
         contactListView.setOnItemClickListener(this);
         contactListView.setAdapter(arrayAdapter);
 

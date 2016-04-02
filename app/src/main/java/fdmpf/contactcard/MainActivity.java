@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import fdmpf.contactcard.contact.Contact;
 import fdmpf.contactcard.contact.ContactDatabaseHelper;
 import fdmpf.contactcard.fragments.FragmentContactDetail;
 import fdmpf.contactcard.fragments.FragmentContactList;
@@ -35,12 +34,13 @@ public class MainActivity extends AppCompatActivity implements
 
 
         dbh = new ContactDatabaseHelper(getApplicationContext());
-
+/*
         Contact contact1 = new Contact();
         contact1.setFirstName("Liza");
         contact1.setLastName("Mutsaers");
         contact1.setEmail("email@email.com");
         dbh.addContact(contact1);
+        */
 
     }
 
@@ -53,22 +53,18 @@ public class MainActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.search_view_menu_item, menu);
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
 
-        searchViewItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                // Do whatever you need
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                onBackPressed();
-                return true;
-            }
-        });
 
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+
+        searchViewAndroidActionBar.setOnCloseListener(new SearchView.OnCloseListener() {
+
+            @Override
+            public boolean onClose() {
+
+               onBackPressed();
+                return false;
+            }
+        });
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
