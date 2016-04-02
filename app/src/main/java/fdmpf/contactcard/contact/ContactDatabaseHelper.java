@@ -42,6 +42,28 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         return contactList;
     }
 
+    public ArrayList<Contact> searchContacts (String searchString) {
+        ArrayList<Contact> contactList = new ArrayList<Contact>();
+
+        String query = "SELECT * FROM Contacts WHERE firstName LIKE '%" + searchString + "%' OR lastName LIKE '%" + searchString + "%'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        while( cursor.moveToNext() ) {
+            Contact contact = new Contact();
+
+            contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
+            contact.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
+            contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
+            contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            contact.setImageUrl(cursor.getString(cursor.getColumnIndex("photoUrl")));
+
+            contactList.add(contact);
+        }
+        return contactList;
+    }
+
     private Cursor fetchAllContacts() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM Contacts";

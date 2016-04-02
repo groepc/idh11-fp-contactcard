@@ -22,7 +22,10 @@ import fdmpf.contactcard.contact.ContactDatabaseHelper;
  */
 public class FragmentContactList extends Fragment implements AdapterView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
+    private static final String SEARCH_STRING = null;
+
+    private String mSearchString = null;
+
 
     private ArrayList<Contact> contactList = new ArrayList<>();
     private ListView contactListView;
@@ -31,6 +34,14 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
     private OnFragmentInteractionListener mListener;
 
 
+    public static FragmentContactList newInstance(String param1) {
+        FragmentContactList fragment = new FragmentContactList();
+        Bundle args = new Bundle();
+        args.putString(SEARCH_STRING, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public FragmentContactList() {
         // Required empty public constructor
     }
@@ -38,9 +49,17 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ContactDatabaseHelper dbh = new ContactDatabaseHelper(getActivity().getApplicationContext());
-        contactList = dbh.getAllContacts();
 
+        if (getArguments() != null) {
+            mSearchString = getArguments().getString(SEARCH_STRING);
+        }
+
+        ContactDatabaseHelper dbh = new ContactDatabaseHelper(getActivity().getApplicationContext());
+        if (mSearchString != null) {
+            contactList = dbh.searchContacts(mSearchString);
+        } else {
+            contactList = dbh.getAllContacts();
+        }
     }
 
     @Override
