@@ -102,8 +102,6 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Contact contact = arrayAdapter.getItem(position);
-        System.out.print("Hieronder contact");
-        System.out.print(contact);
         mListener.onFragmentInteraction(contact.getId());
     }
 

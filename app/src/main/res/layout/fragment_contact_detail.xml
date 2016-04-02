@@ -108,14 +108,14 @@
             android:paddingTop="5dp">
 
             <TextView
-                android:id="@+id/labelSell"
+                android:id="@+id/labelCell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/labelSell" />
 
             <TextView
-                android:id="@+id/textSell"
+                android:id="@+id/textCell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"

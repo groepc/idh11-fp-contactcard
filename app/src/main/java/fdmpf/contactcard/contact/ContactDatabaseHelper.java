@@ -21,22 +21,14 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
     public ArrayList<Contact> getAllContacts() {
         ArrayList<Contact> contactList = new ArrayList<Contact>();
 
         Cursor cursor = fetchAllContacts();
         cursor.moveToFirst();
         while( cursor.moveToNext() ) {
-            Contact contact = new Contact();
 
-            contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
-            contact.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
-            contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
-            contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-            contact.setImageUrl(cursor.getString(cursor.getColumnIndex("photoUrl")));
-
-            contactList.add(contact);
+            contactList.add(createContact(cursor));
         }
         System.out.print(contactList);
         return contactList;
@@ -44,22 +36,15 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
 
     public ArrayList<Contact> searchContacts (String searchString) {
         ArrayList<Contact> contactList = new ArrayList<Contact>();
-
+    System.out.println(searchString);
         String query = "SELECT * FROM Contacts WHERE firstName LIKE '%" + searchString + "%' OR lastName LIKE '%" + searchString + "%'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while( cursor.moveToNext() ) {
-            Contact contact = new Contact();
 
-            contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
-            contact.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
-            contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
-            contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-            contact.setImageUrl(cursor.getString(cursor.getColumnIndex("photoUrl")));
-
-            contactList.add(contact);
+            contactList.add(createContact(cursor));
         }
         return contactList;
     }
@@ -81,6 +66,10 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         cursor.moveToFirst();
         db.close();
 
+        return createContact(cursor);
+    }
+
+    protected Contact createContact (Cursor cursor) {
         Contact contact = new Contact();
 
         contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
@@ -88,7 +77,11 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         contact.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
         contact.setEmail(cursor.getString(cursor.getColumnIndex("email")));
         contact.setImageUrl(cursor.getString(cursor.getColumnIndex("photoUrl")));
-
+        contact.setAddress(cursor.getString(cursor.getColumnIndex("address")));
+        contact.setPostalCode(cursor.getString(cursor.getColumnIndex("postalCode")));
+        contact.setCity(cursor.getString(cursor.getColumnIndex("city")));
+        contact.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+        contact.setCell(cursor.getString(cursor.getColumnIndex("cell")));
 
         return contact;
     }
@@ -100,6 +93,11 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         values.put("lastName", contact.getLastName());
         values.put("email", contact.getEmail());
         values.put("photoUrl", contact.getImageUrl());
+        values.put("phone", contact.getPhone());
+        values.put("cell", contact.getCell());
+        values.put("address", contact.getAddress());
+        values.put("postalCode", contact.getPostalCode());
+        values.put("city", contact.getCity());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert("Contacts", null, values);

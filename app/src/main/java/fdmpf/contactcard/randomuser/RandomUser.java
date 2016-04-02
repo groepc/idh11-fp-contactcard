@@ -12,9 +12,9 @@ public class RandomUser {
     static String url = "https://randomuser.me/api/";
 
 
-    public static JSONObject randomUser () {
+    public static JSONObject randomUser() {
 
-        return Http.getJson(url,"");
+        return Http.getJson(url, "");
     }
 
     public static JSONObject getRandomUserByNat(String nat) {

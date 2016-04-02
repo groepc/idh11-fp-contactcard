@@ -20,19 +20,16 @@ public class Http {
 
     public static JSONObject getJson(String urlString, String action) {
 
-        // HttpClient client = new DefaultHttpClient();
+        System.out.println("http get json");
         InputStream inputStream = null;
-        int responsCode = -1;
         JSONObject response = null;
         try {
-            System.out.println("Get 1");
             URL url = new URL(urlString + action);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
-                // Url
                 System.out.println("Get 2");
-                //return null;
+                return response;
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
@@ -41,12 +38,10 @@ public class Http {
             httpConnection.setRequestMethod("GET");
             httpConnection.connect();
 
-            responsCode = httpConnection.getResponseCode();
 
-            if (responsCode == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConnection.getInputStream();
-                response = stringToJson(getStringFromInputStream(inputStream));
-            }
+            inputStream = httpConnection.getInputStream();
+            response = stringToJson(getStringFromInputStream(inputStream));
+
         } catch (Exception e) {
             System.out.println("Exception1");
             Log.e("TAG", e.getLocalizedMessage());
@@ -57,7 +52,7 @@ public class Http {
 
     }
 
-    private static JSONObject stringToJson (String string) {
+    private static JSONObject stringToJson(String string) {
 
         JSONObject returnValue = null;
 

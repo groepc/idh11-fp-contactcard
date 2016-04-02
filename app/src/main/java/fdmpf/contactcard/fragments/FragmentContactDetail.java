@@ -25,10 +25,12 @@ public class FragmentContactDetail extends Fragment {
     Contact contact;
 
     //view
-
-    TextView textName;
     TextView email;
-
+    TextView name;
+    TextView postalCode;
+    TextView city;
+    TextView phone;
+    TextView cell;
     TextView address;
 
     public static FragmentContactDetail newInstance(int idContact) {
@@ -67,8 +69,28 @@ public class FragmentContactDetail extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_detail, container, false);
 
+        System.out.print(contact);
+
+        name = (TextView) view.findViewById(R.id.textName);
+        name.setText(contact.getFirstName() + ' ' + contact.getLastName());
+
+        email = (TextView) view.findViewById(R.id.textEmail);
+        email.setText(contact.getEmail());
+
+        phone = (TextView) view.findViewById(R.id.textPhone);
+        phone.setText(contact.getPhone());
+
+        cell = (TextView) view.findViewById(R.id.textCell);
+        cell.setText(contact.getCell());
+
         address = (TextView) view.findViewById(R.id.textAddress);
-        address.setText(contact.getFirstName());
+        address.setText(contact.getAddress());
+
+        postalCode = (TextView) view.findViewById(R.id.textZipCode);
+        postalCode.setText(contact.getPostalCode());
+
+        city = (TextView) view.findViewById(R.id.textCity);
+        city.setText(contact.getCity());
 
 
         return view;

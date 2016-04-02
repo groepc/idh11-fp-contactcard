@@ -13,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import fdmpf.contactcard.contact.Contact;
 import fdmpf.contactcard.contact.ContactDatabaseHelper;
+import fdmpf.contactcard.contact.ContactFinder;
 import fdmpf.contactcard.fragments.FragmentContactDetail;
 import fdmpf.contactcard.fragments.FragmentContactList;
 
@@ -23,25 +23,17 @@ public class MainActivity extends AppCompatActivity implements
 
 
     static ContactDatabaseHelper dbh;
+    static SearchView searchViewAndroidActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_a, new FragmentContactList()).addToBackStack(null).commit();
-
-
-        dbh = new ContactDatabaseHelper(getApplicationContext());
-
-        Contact contact1 = new Contact();
-        contact1.setFirstName("Perry");
-        contact1.setLastName("Faro");
-        contact1.setEmail("email@email.com");
-        dbh.addContact(contact1);
-
 
     }
 
@@ -52,17 +44,15 @@ public class MainActivity extends AppCompatActivity implements
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_view_menu_item, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        final MenuItem searchViewItem = menu.findItem(R.id.action_search);
 
-
-        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
-
+        searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setOnCloseListener(new SearchView.OnCloseListener() {
 
             @Override
             public boolean onClose() {
-
-               onBackPressed();
+                searchViewAndroidActionBar.clearFocus();
+                onBackPressed();
                 return false;
             }
         });
@@ -144,5 +134,34 @@ public class MainActivity extends AppCompatActivity implements
 
 // Commit the transaction
         transaction.commit();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //add 5 new random contacts
+
+                    ContactFinder.dbh = new ContactDatabaseHelper(getApplicationContext());
+
+                    ContactFinder.randomApiRequests(5);
+                    System.out.print("666666664444");
+                }
+            });
+            thread.start();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
