@@ -8,4 +8,12 @@
         android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/empty_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:text="@string/contact_empty_list" >
+    </TextView>
 </LinearLayout>

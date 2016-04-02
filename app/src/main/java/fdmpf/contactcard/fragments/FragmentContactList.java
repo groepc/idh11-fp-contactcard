@@ -70,12 +70,11 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
-        View viewEmpty = inflater.inflate(R.layout.contact_empty_list_item, container, false);
 
         arrayAdapter = new ContactAdapter(getActivity().getApplicationContext(), inflater, contactList);
 
         contactListView = (ListView) view.findViewById(R.id.listView);
-        contactListView.setEmptyView(viewEmpty);
+        contactListView.setEmptyView(view.findViewById(R.id.empty_list_item));
         contactListView.setOnItemClickListener(this);
         contactListView.setAdapter(arrayAdapter);
 
@@ -103,6 +102,8 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Contact contact = arrayAdapter.getItem(position);
+        System.out.print("Hieronder contact");
+        System.out.print(contact);
         mListener.onFragmentInteraction(contact.getId());
     }
 

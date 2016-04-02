@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import fdmpf.contactcard.contact.Contact;
 import fdmpf.contactcard.contact.ContactDatabaseHelper;
 import fdmpf.contactcard.fragments.FragmentContactDetail;
 import fdmpf.contactcard.fragments.FragmentContactList;
@@ -34,13 +35,13 @@ public class MainActivity extends AppCompatActivity implements
 
 
         dbh = new ContactDatabaseHelper(getApplicationContext());
-/*
+
         Contact contact1 = new Contact();
-        contact1.setFirstName("Liza");
-        contact1.setLastName("Mutsaers");
+        contact1.setFirstName("Perry");
+        contact1.setLastName("Faro");
         contact1.setEmail("email@email.com");
         dbh.addContact(contact1);
-        */
+
 
     }
 
@@ -93,8 +94,9 @@ public class MainActivity extends AppCompatActivity implements
         if (info != null) {
 
         } else {
-
-            Fragment newFragment = new FragmentContactDetail();
+            System.out.println("Hieronder het id:");
+            System.out.print(id);
+            Fragment newFragment = FragmentContactDetail.newInstance(id);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 // Replace whatever is in the fragment_container view with this fragment,

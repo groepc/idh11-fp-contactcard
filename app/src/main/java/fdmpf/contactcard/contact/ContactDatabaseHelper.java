@@ -75,7 +75,7 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
     }
 
     public Contact getById (int id) {
-        String query = "SELECT * FROM Contacts WHERE id='" + id + "'";
+        String query = "SELECT * FROM Contacts WHERE contactId='" + id + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -95,6 +95,7 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
 
     public void addContact(Contact contact) {
         ContentValues values = new ContentValues();
+        values.putNull("contactId");
         values.put("firstName", contact.getFirstName());
         values.put("lastName", contact.getLastName());
         values.put("email", contact.getEmail());

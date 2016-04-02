@@ -151,7 +151,7 @@
                 android:text="@string/labelAddress" />
 
             <TextView
-                android:id="@+id/textAdres"
+                android:id="@+id/textAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"

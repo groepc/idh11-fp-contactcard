@@ -38,7 +38,6 @@ public class ContactAdapter extends BaseAdapter {
 
     @Override
     public Contact getItem(int position) {
-        Log.i("getItem()","");
         return mContactArrayList.get(position);
     }
 

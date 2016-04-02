@@ -61,6 +61,7 @@ public class Contact {
     @Override
     public String toString() {
         return "Person{" +
+                "id= " + getId() + "," +
                 "imageUrl='" + imageUrl + '\'' +
                 ", title='" + title + '\'' +
                 ", first='" + getFirstName() + '\'' +
