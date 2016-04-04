@@ -22,31 +22,16 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
     }
 
     public ArrayList<Contact> getAllContacts() {
-        ArrayList<Contact> contactList = new ArrayList<Contact>();
-
         Cursor cursor = fetchAllContacts();
-        cursor.moveToFirst();
-        while( cursor.moveToNext() ) {
-
-            contactList.add(createContact(cursor));
-        }
-        System.out.print(contactList);
-        return contactList;
+        return loopResult(cursor);
     }
 
-    public ArrayList<Contact> searchContacts (String searchString) {
-        ArrayList<Contact> contactList = new ArrayList<Contact>();
-    System.out.println(searchString);
+    public ArrayList<Contact> searchContacts(String searchString) {
         String query = "SELECT * FROM Contacts WHERE firstName LIKE '%" + searchString + "%' OR lastName LIKE '%" + searchString + "%'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        cursor.moveToFirst();
-        while( cursor.moveToNext() ) {
-
-            contactList.add(createContact(cursor));
-        }
-        return contactList;
+        return loopResult(cursor);
     }
 
     private Cursor fetchAllContacts() {
@@ -54,22 +39,18 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         String query = "SELECT * FROM Contacts";
 
         Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-        db.close();
         return c;
     }
 
-    public Contact getById (int id) {
+    public Contact getById(int id) {
         String query = "SELECT * FROM Contacts WHERE contactId='" + id + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        db.close();
 
-        return createContact(cursor);
+        return loopResult(cursor).get(0);
     }
 
-    protected Contact createContact (Cursor cursor) {
+    protected Contact createContact(Cursor cursor) {
         Contact contact = new Contact();
 
         contact.setId(cursor.getInt(cursor.getColumnIndex("contactId")));
@@ -84,6 +65,22 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         contact.setCell(cursor.getString(cursor.getColumnIndex("cell")));
 
         return contact;
+    }
+
+    private ArrayList<Contact> loopResult(Cursor cursor) {
+        ArrayList<Contact> contactList = new ArrayList<>();
+
+        if (!cursor.moveToFirst()) {
+            return contactList;
+        }
+
+        do {
+            contactList.add(createContact(cursor));
+        } while (cursor.moveToNext());
+
+        cursor.close();
+
+        return contactList;
     }
 
     public void addContact(Contact contact) {

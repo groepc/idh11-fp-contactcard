@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
         transaction.replace(R.id.fragment_a, newFragment);
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
 
 // Commit the transaction
         transaction.commit();
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements
                     ContactFinder.dbh = new ContactDatabaseHelper(getApplicationContext());
 
                     ContactFinder.randomApiRequests(5);
-                    System.out.print("666666664444");
                 }
             });
             thread.start();
