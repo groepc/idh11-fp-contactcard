@@ -15,14 +15,18 @@ public class ContactFinder {
 
         for (int i = 0; i <= findRandom; i += 1) {
 
-            Http http = Http.getInstance();
-            http.getJson(RandomUser.getRandomUserByNatUrl("nl"), new Http.JsonResponseListener() {
-                @Override
-                public void getResult(JSONObject json) {
-                    RandomUser.dbh = dbh;
-                    RandomUser.createNewUser(json);
-                }
-            });
+            try {
+                Http http = Http.getInstance();
+                http.getJson(RandomUser.getRandomUserByNatUrl("nl"), new Http.JsonResponseListener() {
+                    @Override
+                    public void getResult(JSONObject json) {
+                        RandomUser.dbh = dbh;
+                        RandomUser.createNewUser(json);
+                    }
+                });
+            } catch (Exception e) {
+
+            }
 
 
         }

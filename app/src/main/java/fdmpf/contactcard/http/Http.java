@@ -2,6 +2,7 @@ package fdmpf.contactcard.http;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,6 +14,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import fdmpf.contactcard.R;
+
 /**
  * Created by perryfaro on 27-03-16.
  */
@@ -21,9 +24,11 @@ public class Http {
 
     private static Http instance = null;
     public RequestQueue requestQueue;
+    private Context context = null;
 
     private Http(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+        this.context = context;
     }
 
     public static synchronized Http getInstance(Context context) {
@@ -56,7 +61,8 @@ public class Http {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        throw new RuntimeException("Connection to RandomUserAPI failed. Try again");
+                        Toast.makeText(context, R.string.http_no_connection, Toast.LENGTH_LONG).show();
+                        //throw new RuntimeException("Connection to RandomUserAPI failed. Try again");
                     }
                 });
 
