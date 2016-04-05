@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import fdmpf.contactcard.contact.ContactDatabaseHelper;
 import fdmpf.contactcard.contact.ContactFinder;
 import fdmpf.contactcard.fragments.FragmentContactDetail;
 import fdmpf.contactcard.fragments.FragmentContactList;
+import fdmpf.contactcard.http.Http;
 
 public class MainActivity extends AppCompatActivity implements
         FragmentContactList.OnFragmentInteractionListener {
@@ -33,7 +35,10 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getFragmentManager().beginTransaction().replace(R.id.fragment_a, new FragmentContactList()).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_a, new FragmentContactList()).commit();
+
+        //create http instance
+        Http.getInstance(this);
 
     }
 
@@ -77,37 +82,35 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(int id) {
         // Log.i("onFragmentInteraction", id);
-        // Doorsturen naar andere Fragments ...
-        FragmentContactDetail info = (FragmentContactDetail)
-                getFragmentManager().findFragmentById(R.id.fragment_b);
         // In Landscape, info != null
-        if (info != null) {
 
+
+        FrameLayout f = (FrameLayout) findViewById(R.id.fragment_b);
+        if(f != null && f instanceof FrameLayout) {
+            searchViewAndroidActionBar.clearFocus();
+            Fragment newFragment = FragmentContactDetail.newInstance(id);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack if needed
+            transaction.replace(R.id.fragment_b, newFragment);
+            //transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commit();
         } else {
-            System.out.println("Hieronder het id:");
-            System.out.print(id);
+            searchViewAndroidActionBar.clearFocus();
             Fragment newFragment = FragmentContactDetail.newInstance(id);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
             transaction.replace(R.id.fragment_a, newFragment);
-            transaction.addToBackStack(null);
+            //transaction.addToBackStack(null);
 
 // Commit the transaction
             transaction.commit();
 
-            /*
-            final FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_a, new FragmentContactDetail(), "NewFragmentTag");
-            ft.commit();
-
-
-            Intent intent = new Intent(this, FragmentContactDetail.class);
-            intent.putExtra("id", id);
-            startActivity(intent);
-            // overridePendingTransition(R.anim.animation_right_to_center, R.anim.animation_center_to_left);
-            */
         }
     }
 
@@ -126,12 +129,9 @@ public class MainActivity extends AppCompatActivity implements
     public void searchViewHandler(String searchString) {
         Fragment newFragment = FragmentContactList.newInstance(searchString);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
         transaction.replace(R.id.fragment_a, newFragment);
-        //transaction.addToBackStack(null);
-
 // Commit the transaction
         transaction.commit();
     }

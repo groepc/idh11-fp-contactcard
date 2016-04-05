@@ -1,16 +1,17 @@
 package fdmpf.contactcard.http;
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Created by perryfaro on 27-03-16.
@@ -18,82 +19,73 @@ import java.net.URLConnection;
 public class Http {
 
 
-    public static JSONObject getJson(String urlString, String action) {
+    private static Http instance = null;
+    public RequestQueue requestQueue;
 
-        System.out.println("http get json");
-        InputStream inputStream = null;
-        JSONObject response = null;
-        try {
-            URL url = new URL(urlString + action);
-            URLConnection urlConnection = url.openConnection();
-
-            if (!(urlConnection instanceof HttpURLConnection)) {
-                System.out.println("Get 2");
-                return response;
-            }
-
-            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
-            httpConnection.setRequestMethod("GET");
-            httpConnection.connect();
-
-
-            inputStream = httpConnection.getInputStream();
-            response = stringToJson(getStringFromInputStream(inputStream));
-
-        } catch (Exception e) {
-            System.out.println("Exception1");
-            Log.e("TAG", e.getLocalizedMessage());
-            //return null;
-        }
-
-        return response;
-
+    private Http(Context context) {
+        requestQueue = Volley.newRequestQueue(context.getApplicationContext());
     }
 
-    private static JSONObject stringToJson(String string) {
+    public static synchronized Http getInstance(Context context) {
 
-        JSONObject returnValue = null;
-
-        try {
-            returnValue = new JSONObject(string);
-        } catch (Exception e) {
-
+        if (null == instance) {
+            instance = new Http(context);
         }
-        return returnValue;
+
+        return instance;
     }
 
-
-    //
-    // convert InputStream to String
-    //
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    //this is so we don't need to pass context each time
+    public static synchronized Http getInstance() {
+        if (null == instance) {
+            throw new IllegalStateException(Http.class.getSimpleName() + " is not initialized, call getInstance(...) first");
         }
+        return instance;
+    }
 
-        return sb.toString();
+    public void getJson(String url, final JsonResponseListener<JSONObject> listener) {
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        listener.getResult(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        throw new RuntimeException("Connection to RandomUserAPI failed. Try again");
+                    }
+                });
+
+        requestQueue.add(jsObjRequest);
+    }
+
+    public void getImage(String url, final ImageResponseListener listener) {
+        ImageRequest request = new ImageRequest(url,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        listener.getResult(bitmap);
+                    }
+                }, 0, 0, Bitmap.Config.RGB_565,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error);
+                    }
+                });
+
+        requestQueue.add(request);
+    }
+
+    public interface JsonResponseListener<T> {
+        void getResult(JSONObject json);
+    }
+
+    public interface ImageResponseListener<T> {
+        void getResult(Bitmap bitmap);
     }
 
 }

@@ -1,15 +1,19 @@
 package fdmpf.contactcard.fragments;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import fdmpf.contactcard.R;
 import fdmpf.contactcard.contact.Contact;
 import fdmpf.contactcard.contact.ContactDatabaseHelper;
+import fdmpf.contactcard.http.Http;
 
 /**
  * Created by Hans on 27-3-2016.
@@ -25,6 +29,7 @@ public class FragmentContactDetail extends Fragment {
     Contact contact;
 
     //view
+    ImageView image;
     TextView email;
     TextView name;
     TextView postalCode;
@@ -32,6 +37,8 @@ public class FragmentContactDetail extends Fragment {
     TextView phone;
     TextView cell;
     TextView address;
+    FloatingActionButton delete;
+    Http http;
 
     public static FragmentContactDetail newInstance(int idContact) {
 
@@ -58,6 +65,7 @@ public class FragmentContactDetail extends Fragment {
 
         dbh = new ContactDatabaseHelper(getActivity().getApplicationContext());
         contact = dbh.getById(mIdContact);
+        http = Http.getInstance();
 
     }
 
@@ -69,7 +77,25 @@ public class FragmentContactDetail extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_detail, container, false);
 
-        System.out.print(contact);
+
+        delete = (FloatingActionButton) view.findViewById(R.id.fab);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clicked to delete");
+                dbh.delete(mIdContact);
+
+            }
+        });
+
+
+        image = (ImageView) view.findViewById(R.id.imageView);
+        http.getImage(contact.getImageUrl(), new Http.ImageResponseListener() {
+            @Override
+            public void getResult(Bitmap bitmap) {
+                image.setImageBitmap(bitmap);
+            }
+        });
 
         name = (TextView) view.findViewById(R.id.textName);
         name.setText(contact.getFirstName() + ' ' + contact.getLastName());
@@ -91,7 +117,6 @@ public class FragmentContactDetail extends Fragment {
 
         city = (TextView) view.findViewById(R.id.textCity);
         city.setText(contact.getCity());
-
 
         return view;
     }

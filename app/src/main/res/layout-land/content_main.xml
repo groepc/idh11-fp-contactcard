@@ -11,10 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/fragment_a"
             class="fdmpf.contactcard.fragments.FragmentContactList"
             android:layout_width="0dp"
@@ -22,13 +22,13 @@
             android:layout_weight="1"
             tools:layout="@layout/fragment_contact_list" />
 
-        <fragment
+        <FrameLayout
             android:id="@+id/fragment_b"
             class="fdmpf.contactcard.fragments.FragmentContactDetail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             tools:layout="@layout/fragment_contact_detail" />
-    </LinearLayout>
 
+    </LinearLayout>
 </RelativeLayout>

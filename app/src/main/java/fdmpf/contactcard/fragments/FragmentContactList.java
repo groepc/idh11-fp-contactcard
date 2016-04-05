@@ -29,7 +29,7 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
 
     private ArrayList<Contact> contactList = new ArrayList<>();
     private ListView contactListView;
-    private ContactAdapter arrayAdapter;
+    public static ContactAdapter arrayAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,6 +102,7 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Contact contact = arrayAdapter.getItem(position);
+
         mListener.onFragmentInteraction(contact.getId());
     }
 

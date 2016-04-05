@@ -27,9 +27,9 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
     }
 
     public ArrayList<Contact> searchContacts(String searchString) {
-        String query = "SELECT * FROM Contacts WHERE firstName LIKE '%" + searchString + "%' OR lastName LIKE '%" + searchString + "%'";
+        String query = "SELECT * FROM Contacts WHERE firstName LIKE ? OR lastName LIKE ?";
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String [] {"%" + searchString + "%","%" + searchString + "%"});
 
         return loopResult(cursor);
     }
@@ -99,6 +99,11 @@ public class ContactDatabaseHelper extends SQLiteAssetHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert("Contacts", null, values);
         db.close();
+    }
+
+    public void delete (int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("Contacts", "contactId=?", new String[]{"" + id,});
     }
 
 }
