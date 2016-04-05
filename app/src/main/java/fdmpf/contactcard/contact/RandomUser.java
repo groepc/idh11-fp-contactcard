@@ -50,8 +50,8 @@ public class RandomUser {
 
 
             dbh.addContact(contact);
-            ContactAdapter.addContact(contact);
-            if (ContactAdapter.mContactArrayList.size() == 0) {
+            FragmentContactList.arrayAdapter.addContact(contact);
+            if (FragmentContactList.arrayAdapter.mContactArrayList.size() == 0) {
                 FragmentContactList.arrayAdapter.notifyDataSetInvalidated();
             } else {
                 FragmentContactList.arrayAdapter.notifyDataSetChanged();

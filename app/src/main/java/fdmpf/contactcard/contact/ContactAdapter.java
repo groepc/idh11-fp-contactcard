@@ -22,19 +22,31 @@ public class ContactAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflator;
-    static ArrayList<Contact> mContactArrayList;
+    ArrayList<Contact> mContactArrayList;
     Http http;
 
-    public ContactAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Contact> personArrayList)
+    public ContactAdapter(Context context, LayoutInflater layoutInflater)
     {
         mContext = context;
         mInflator = layoutInflater;
-        mContactArrayList = personArrayList;
+        //mContactArrayList = personArrayList;
         http = Http.getInstance();
     }
 
-    public static void addContact (Contact contact) {
+    public void addAll(ArrayList<Contact> result) {
+        if(mContactArrayList==null){
+            mContactArrayList = new ArrayList<Contact>();
+        }
+        mContactArrayList.addAll(result);
+        notifyDataSetChanged();
+    }
+
+    public void addContact (Contact contact) {
+        if(mContactArrayList==null){
+            mContactArrayList = new ArrayList<Contact>();
+        }
         mContactArrayList.add(contact);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,6 +58,10 @@ public class ContactAdapter extends BaseAdapter {
 
     @Override
     public Contact getItem(int position) {
+        System.out.println("we komen hier nu");
+        System.out.print(mContactArrayList);
+        System.out.println(getCount());
+        System.out.println(position);
         return mContactArrayList.get(position);
     }
 
@@ -84,9 +100,6 @@ public class ContactAdapter extends BaseAdapter {
                 viewHolder.imageView.setImageBitmap(bitmap);
             }
         });
-
-
-        //viewHolder.imageView = null; //setImageBitmap(person.imageUrl);
 
         return convertView;
     }

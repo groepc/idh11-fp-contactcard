@@ -20,7 +20,7 @@ import fdmpf.contactcard.contact.ContactDatabaseHelper;
 /**
  * Created by Hans on 27-3-2016.
  */
-public class FragmentContactList extends Fragment implements AdapterView.OnItemClickListener {
+public class FragmentContactList extends Fragment {
 
     private static final String SEARCH_STRING = null;
 
@@ -71,11 +71,20 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
 
-        arrayAdapter = new ContactAdapter(getActivity().getApplicationContext(), inflater, contactList);
+        arrayAdapter = new ContactAdapter(getActivity().getApplicationContext(), inflater);
+        arrayAdapter.addAll(contactList);
 
         contactListView = (ListView) view.findViewById(R.id.listView);
         contactListView.setEmptyView(view.findViewById(R.id.empty_list_item));
-        contactListView.setOnItemClickListener(this);
+        contactListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("Position click" + position);
+                Contact contact = arrayAdapter.getItem(position);
+
+                mListener.onFragmentInteraction(contact.getId());
+            }
+        });
         contactListView.setAdapter(arrayAdapter);
 
         return view;
@@ -98,13 +107,6 @@ public class FragmentContactList extends Fragment implements AdapterView.OnItemC
         mListener = null;
     }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Contact contact = arrayAdapter.getItem(position);
-
-        mListener.onFragmentInteraction(contact.getId());
-    }
 
     /**
      * This interface must be implemented by activities that contain this
