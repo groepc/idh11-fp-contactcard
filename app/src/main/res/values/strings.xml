@@ -13,5 +13,5 @@
     <string name="menu_search">Zoeken...</string>
     <string name="contact_empty_list">U heeft nog geen contacten</string>
     <string name="add_random_users">Voeg random users toe</string>
-    <string name="http_no_connection">Kan geen verbinding maken, probeer opnieuw of controller uw verbinding.</string>
+    <string name="http_no_connection">Kan geen verbinding maken, probeer opnieuw of controleer uw verbinding.</string>
 </resources>
