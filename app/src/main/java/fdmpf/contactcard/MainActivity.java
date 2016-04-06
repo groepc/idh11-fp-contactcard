@@ -99,17 +99,21 @@ public class MainActivity extends AppCompatActivity implements
 // Commit the transaction
             transaction.commit();
         } else {
-            searchViewAndroidActionBar.clearFocus();
-            Fragment newFragment = FragmentContactDetail.newInstance(id);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            if (id > 0) {
+                searchViewAndroidActionBar.clearFocus();
+                Fragment newFragment = FragmentContactDetail.newInstance(id);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack if needed
-            transaction.replace(R.id.fragment_a, newFragment);
-            //transaction.addToBackStack(null);
+                transaction.replace(R.id.fragment_a, newFragment);
+                //transaction.addToBackStack(null);
 
 // Commit the transaction
-            transaction.commit();
+                transaction.commit();
+            } else {
+                getFragmentManager().beginTransaction().replace(R.id.fragment_a, new FragmentContactList()).commit();
+            }
 
         }
     }

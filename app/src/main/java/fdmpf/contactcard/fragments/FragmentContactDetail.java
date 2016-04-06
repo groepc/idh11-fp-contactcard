@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class FragmentContactDetail extends Fragment {
     TextView address;
     FloatingActionButton delete;
     Http http;
+    FrameLayout f = null;
 
     public static FragmentContactDetail newInstance(int idContact) {
 
@@ -77,6 +79,9 @@ public class FragmentContactDetail extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_detail, container, false);
 
+        if (container != null) {
+            f = (FrameLayout) container.findViewById(R.id.fragment_b);
+        }
 
         delete = (FloatingActionButton) view.findViewById(R.id.fab);
         delete.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +89,13 @@ public class FragmentContactDetail extends Fragment {
             public void onClick(View v) {
                 System.out.println("clicked to delete");
                 dbh.delete(mIdContact);
+
+                if(f != null && f instanceof FrameLayout) {
+                    FragmentContactList.arrayAdapter.addAll(dbh.getAllContacts());
+                    FragmentContactList.arrayAdapter.notifyDataSetChanged();
+                    f.removeAllViews();
+                }
+
 
             }
         });
